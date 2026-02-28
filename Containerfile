@@ -3,7 +3,7 @@ FROM scratch AS ctx
 COPY build_files /
 
 # Base Image
-FROM ghcr.io/ublue-os/bazzite-gnome-nvidia-open:stable
+FROM ghcr.io/ublue-os/bazzite-gnome-nvidia:stable
 
 ## Other possible base images include:
 # FROM ghcr.io/ublue-os/bazzite:latest
@@ -33,8 +33,9 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \
+    --mount=type=secret,id=MOK,target=/run/secrets/MOK \
     /ctx/build.sh
-    
+
 ### LINTING
 ## Verify final image and contents are correct.
 RUN bootc container lint
